@@ -46,3 +46,5 @@ class Carnivore(Animal):
     def bite(self, target: Animal) -> None:
         if isinstance(target, Herbivore) and not target.hidden:
             target.take_damage(50)
+
+            print(f"{self.name} bit {target.name}!")
