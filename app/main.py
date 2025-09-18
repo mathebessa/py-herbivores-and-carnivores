@@ -1,12 +1,20 @@
-class Animal:
-    alive = []
+from __future__ import annotations
 
-    def __init__(self, name: str, health: int = 100,
-                 hidden: bool = False) -> None:
+
+class Animal:
+    alive: list[Animal] = []
+
+    def __init__(
+        self,
+        name: str,
+        health: int = 100,
+        hidden: bool = False
+    ) -> None:
         self.name = name
-        self.health = health
+        self.health = health if health > 0 else 0
         self.hidden = hidden
-        Animal.alive.append(self)
+        if self.health > 0:
+            Animal.alive.append(self)
 
     def take_damage(self, amount: int) -> None:
         self.health -= amount
@@ -27,10 +35,6 @@ class Animal:
             f"{{Name: {self.name}, Health: {self.health}, "
             f"Hidden: {self.hidden}}}"
         )
-
-    @classmethod
-    def __str__(cls) -> str:
-        return str([repr(animal) for animal in cls.alive])
 
 
 class Herbivore(Animal):
