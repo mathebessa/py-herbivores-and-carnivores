@@ -4,7 +4,10 @@ from typing import List
 
 class AliveList(List["Animal"]):
     def __repr__(self) -> str:
-        return "[" + ", ".join(repr(a) for a in self) + "]"
+        return "[" + ", ".join(
+            f"{{Name: {a.name}, Health: {a.health}, Hidden: {a.hidden}}}"
+            for a in self
+        ) + "]"
 
 
 class Animal:
