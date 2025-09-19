@@ -1,40 +1,24 @@
 from __future__ import annotations
+from typing import List
 
 
 class Animal:
-    alive: list[Animal] = []
+    alive: List[Animal] = []
 
-    def __init__(
-        self,
-        name: str,
-        health: int = 100,
-        hidden: bool = False
-    ) -> None:
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.health = health if health > 0 else 0
-        self.hidden = hidden
-        if self.health > 0:
-            Animal.alive.append(self)
-
-    def take_damage(self, amount: int) -> None:
-        self.health -= amount
-        if self.health <= 0:
-            self.die()
-
-    def heal(self, amount: int) -> None:
-        if self.health > 0:
-            self.health = min(100, self.health + amount)
-
-    def die(self) -> None:
-        if self in Animal.alive:
-            Animal.alive.remove(self)
-        self.health = 0
+        self.health = 100
+        self.hidden = False
+        Animal.alive.append(self)
 
     def __repr__(self) -> str:
-        return (
-            f"{{Name: {self.name}, Health: {self.health}, "
-            f"Hidden: {self.hidden}}}"
-        )
+        names = [animal.name for animal in Animal.alive]
+        return f"Alive animals: {names}"
+
+    def _die_check(self) -> None:
+        if self.health <= 0 and self in Animal.alive:
+            self.health = 0
+            Animal.alive.remove(self)
 
 
 class Herbivore(Animal):
@@ -43,8 +27,7 @@ class Herbivore(Animal):
 
 
 class Carnivore(Animal):
-    def bite(self, target: Animal) -> None:
-        if isinstance(target, Herbivore) and not target.hidden:
-            target.take_damage(50)
-
-            print(f"{self.name} bit {target.name}!")
+    def bite(self, other: Animal) -> None:
+        if isinstance(other, Herbivore) and not other.hidden:
+            other.health -= 50
+            other._die_check()
