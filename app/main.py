@@ -12,10 +12,13 @@ class Animal:
         Animal.alive.append(self)
 
     def __repr__(self) -> str:
-        return "[" + ", ".join(
-            f"{{Name: {a.name}, Health: {a.health}, Hidden: {a.hidden}}}"
-            for a in Animal.alive
-        ) + "]"
+        return (
+            f"{{Name: {self.name}, Health: {self.health}, Hidden: {self.hidden}}}"
+        )
+
+    @classmethod
+    def print_alive(cls) -> str:
+        return "[" + ", ".join(repr(a) for a in cls.alive) + "]"
 
     def _die_check(self) -> None:
         if self.health <= 0 and self in Animal.alive:
