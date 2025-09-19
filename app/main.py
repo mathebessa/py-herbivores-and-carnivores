@@ -2,8 +2,13 @@ from __future__ import annotations
 from typing import List
 
 
+class AliveList(List["Animal"]):
+    def __repr__(self) -> str:
+        return "[" + ", ".join(repr(a) for a in self) + "]"
+
+
 class Animal:
-    alive: List[Animal] = []
+    alive: AliveList = AliveList()
 
     def __init__(self, name: str, health: int = 100) -> None:
         self.name = name
@@ -17,10 +22,6 @@ class Animal:
             f"Health: {self.health}, "
             f"Hidden: {self.hidden}}}"
         )
-
-    @classmethod
-    def print_alive(cls) -> str:
-        return "[" + ", ".join(repr(a) for a in cls.alive) + "]"
 
     def _die_check(self) -> None:
         if self.health <= 0 and self in Animal.alive:
